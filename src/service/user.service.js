@@ -1,4 +1,3 @@
-const { where } = require("sequelize/dist")
 const User = require("../model/user.model")
 
 class UserService {
@@ -18,6 +17,18 @@ class UserService {
       where: whereOpt
     })
     return res ? res.dataValues : null
+  }
+  async updateById({id, user_name, password, is_admin}){
+    const whereOpt = {id}
+    const newUser = {}
+
+    user_name && Object.assign(newUser, {user_name})
+    password && Object.assign(newUser, {password})
+    is_admin && Object.assign(newUser, {is_admin})
+    // console.log(newUser);
+    const res = await User.update(newUser,{where: whereOpt})
+    // console.log(res);
+    return res.length !== 0 ? true : false
   }
 }
 
